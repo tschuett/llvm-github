@@ -25,6 +25,7 @@ async fn print_lifetime() -> Result<()> {
     let mut current_page = octocrab
         .pulls("llvm", "llvm-project")
         .list()
+        .state(params::State::Closed)
         .head("main")
         .per_page(100)
         .send()
@@ -122,57 +123,6 @@ async fn main() -> Result<()> {
     print_top_authors().await?;
 
     print_lifetime().await?;
-
-    //    let octocrab = Octocrab::default();
-    //
-    //    let mut current_page = octocrab
-    //        .pulls("llvm", "llvm-project")
-    //        .list()
-    //        .state(params::State::Open)
-    //        .head("main")
-    //        .per_page(100)
-    //        .send()
-    //        .await?;
-    //
-    //    let mut prs = current_page.take_items();
-    //
-    //    let mut authors_frequency: HashMap<String, u32> = HashMap::new();
-    //    while let Ok(Some(mut new_page)) = octocrab.get_page(&current_page.next).await {
-    //        prs.extend(new_page.take_items());
-    //
-    //        for pr in prs.drain(..) {
-    //            if let Some(author) = pr.user {
-    //                authors_frequency
-    //                    .entry(author.login)
-    //                    .and_modify(|count| *count += 1)
-    //                    .or_insert(1);
-    //            }
-    //        }
-    //
-    //        current_page = new_page;
-    //    }
-    //
-    //    //    for pr in octocrab::instance()
-    //    //        .pulls("llvm", "llvm-project")
-    //    //        .list()
-    //    //        .state(params::State::Open)
-    //    //        .send()
-    //    //        .await?
-    //    //    {
-    //    //        println!("{}", pr.title.unwrap());
-    //    //        if let Some(author) = pr.user {
-    //    //            authors_frequency
-    //    //                .entry(author.login)
-    //    //                .and_modify(|count| *count += 1)
-    //    //                .or_insert(1);
-    //    //        }
-    //    //    }
-    //    //
-    //    println!("Authors and open PRs");
-    //
-    //    for (author, open) in &authors_frequency {
-    //        println!("{author}     : {open}");
-    //    }
 
     Ok(())
 }
